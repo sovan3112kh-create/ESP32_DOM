@@ -5,30 +5,65 @@
   <title>ESP32 Relay Control Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    * { box-sizing: border-box; }
+
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      background-color: #f9f9f9;
       margin: 0;
       padding: 0 10px 40px;
-      display: flex;
-      flex-direction: column;
       min-height: 100vh;
-      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+      color: #1a2233;
+
+      /* Light circuit-board style background, similar to reference image */
+      background-color: #eef1f5;
+      background-image:
+        linear-gradient(135deg, rgba(238,241,245,0.95), rgba(214,223,232,0.95)),
+        url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>\
+<g fill='none' stroke='%23b9c6d6' stroke-width='1.5'>\
+<path d='M0 40 H80 V0'/>\
+<path d='M120 0 V60 H300'/>\
+<path d='M0 150 H60 V300'/>\
+<path d='M200 300 V220 H300'/>\
+<path d='M0 260 H120 V180 H220'/>\
+<circle cx='80' cy='40' r='4' fill='%237fa8d9' stroke='none'/>\
+<circle cx='120' cy='60' r='4' fill='%237fa8d9' stroke='none'/>\
+<circle cx='60' cy='150' r='4' fill='%237fa8d9' stroke='none'/>\
+<circle cx='200' cy='220' r='4' fill='%237fa8d9' stroke='none'/>\
+<circle cx='220' cy='180' r='4' fill='%237fa8d9' stroke='none'/>\
+</g>\
+</svg>");
+      background-size: cover, 300px 300px;
+      background-repeat: no-repeat, repeat;
     }
+
     h1 {
       margin-top: 30px;
-      font-size: 1.8rem;
+      font-size: 2rem;
+      letter-spacing: 0.5px;
     }
+    .subtitle {
+      color: #5c6b7a;
+      margin-top: -6px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
     .relay-card {
       display: inline-block;
-      background-color: white;
+      background-color: rgba(255,255,255,0.92);
       padding: 20px;
       margin: 15px;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 14px rgba(20,40,70,0.12);
       width: 220px;
       vertical-align: top;
+      backdrop-filter: blur(2px);
     }
     .relay-card h2 {
       margin-bottom: 10px;
@@ -46,7 +81,7 @@
       background-color: blue;
       cursor: pointer;
       font-size: 16px;
-	  width: 90%;
+      width: 90%;
       transition: opacity 0.3s ease;
     }
     .relay-card button:hover {
@@ -78,17 +113,20 @@
       opacity: 0.8;
     }
 
-    /* Responsive layout */
     #dashboard {
       display: none;
+      position: relative;
+      z-index: 1;
     }
     #loginForm {
       max-width: 400px;
       margin: 80px auto 20px;
-      background: white;
+      background: rgba(255,255,255,0.95);
       padding: 30px 20px;
       border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 1;
     }
     #loginForm input {
       width: 100%;
@@ -125,7 +163,27 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    /* Smaller devices */
+
+    /* Person photo, framed, bottom-left like reference layout */
+    .person-photo-wrap {
+      position: fixed;
+      left: 24px;
+      bottom: 0;
+      width: 220px;
+      max-width: 30vw;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.95;
+    }
+    .person-photo-wrap img {
+      width: 100%;
+      display: block;
+      border-radius: 18px 18px 0 0;
+      box-shadow: 0 6px 20px rgba(20,40,70,0.25);
+      border: 3px solid rgba(255,255,255,0.8);
+      border-bottom: none;
+    }
+
     @media (max-width: 700px) {
       .relay-card {
         width: 90%;
@@ -135,18 +193,33 @@
       body {
         padding: 0 10px 60px;
       }
+      .person-photo-wrap {
+        width: 130px;
+        max-width: 38vw;
+        left: 10px;
+        opacity: 0.5;
+      }
     }
+
     footer {
       font-size: 0.9rem;
-      color: #666;
+      color: #5c6b7a;
       padding: 10px 0;
       margin-top: 40px;
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
 
   <h1>ESP32 Relay Control Dashboard</h1>
+  <div class="subtitle">Control &bull; Monitor &bull; Automate</div>
+
+  <!-- Decorative photo, bottom-left -->
+  <div class="person-photo-wrap">
+    <img src="assets/person.png" alt="" />
+  </div>
 
   <!-- Login form -->
   <div id="loginForm">
@@ -205,7 +278,7 @@
   projectId: "esp32-relay-control-01-72dcf",
   storageBucket: "esp32-relay-control-01-72dcf.firebasestorage.app",
   messagingSenderId: "750239390882",
-  appId: "1:750239390882:web:523826ee53cc3933d98bfb"
+  appId: "1:750239390882:web:2ecc8b36ac34d28dd98bfb"
 	};
 
     firebase.initializeApp(firebaseConfig);
