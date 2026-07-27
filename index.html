@@ -18,7 +18,8 @@
       color: #ffffff;
 
       /* Full background image */
-      background-image: url('8163.jpg');
+      background-image: url('images/8163.jpg');
+      background-color: #2a1a3a; /* fallback color while image loads or if missing */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -187,7 +188,7 @@
     }
 
     /* Person photo, framed */
-​​      .person-photo-wrap {
+    .person-photo-wrap {
       position: fixed;
       left: 24px;
       bottom: 0;
@@ -204,6 +205,9 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.4);
       border: 3px solid rgba(255,255,255,0.4);
       border-bottom: none;
+      /* prevents a huge ugly "broken image" icon from stretching if the file is missing */
+      min-height: 40px;
+      background: rgba(255,255,255,0.1);
     }
 
     @media (max-width: 700px) {
@@ -216,7 +220,7 @@
         padding: 0 10px 60px;
       }
       .person-photo-wrap {
-        width: 400px;
+        width: 130px;
         max-width: 38vw;
         left: 10px;
         opacity: 0.5;
@@ -241,7 +245,8 @@
 
   <!-- Decorative photo, bottom-left -->
   <div class="person-photo-wrap">
-    <img src="photo_2026-07-27_12-54-32.png" alt="My photo" />
+    <img src="images/photo.png" alt=""
+         onerror="this.closest('.person-photo-wrap').style.display='none';" />
   </div>
 
   <!-- Decorative ESP32 relay board illustration, bottom-right -->
