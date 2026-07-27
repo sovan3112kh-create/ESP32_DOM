@@ -7,7 +7,6 @@
   <style>
     * { box-sizing: border-box; }
 
- 
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -42,53 +41,42 @@
       text-shadow: 0 1px 3px rgba(0,0,0,0.6);
     }
 
-
-    h1 {
-      margin-top: 30px;
-      font-size: 2rem;
-      letter-spacing: 0.5px;
-    }
-    .subtitle {
-      color: #5c6b7a;
-      margin-top: -6px;
-      margin-bottom: 20px;
-      font-size: 1rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
     .relay-card {
       display: inline-block;
-      background-color: rgba(255,255,255,0.92);
+      background-color: rgba(255, 255, 255, 0.15);
       padding: 20px;
       margin: 15px;
       border-radius: 15px;
-      box-shadow: 0 4px 14px rgba(20,40,70,0.12);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       width: 220px;
       vertical-align: top;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .relay-card h2 {
       margin-bottom: 10px;
       font-size: 1.3rem;
+      color: #fff;
     }
     .relay-card p {
       margin-bottom: 10px;
       font-size: 1rem;
+      color: #f0f0f0;
     }
     .relay-card button {
       padding: 10px 20px;
       border: none;
       border-radius: 10px;
       color: white;
-      background-color: blue;
+      background-color: #8a2be2;
       cursor: pointer;
       font-size: 16px;
       width: 90%;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s ease;
     }
     .relay-card button:hover {
-      opacity: 0.8;
+      opacity: 0.85;
+      transform: scale(1.02);
     }
     #allOffBtn, #logoutBtn {
       max-width: 300px;
@@ -110,7 +98,7 @@
       opacity: 0.8;
     }
     #logoutBtn {
-      background-color: #555;
+      background-color: #4a4a4a;
     }
     #logoutBtn:hover {
       opacity: 0.8;
@@ -124,10 +112,12 @@
     #loginForm {
       max-width: 400px;
       margin: 80px auto 20px;
-      background: rgba(255,255,255,0.95);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 30px 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
       position: relative;
       z-index: 1;
     }
@@ -136,18 +126,20 @@
       padding: 12px 15px;
       margin: 10px 0 20px;
       font-size: 1rem;
-      border: 1.5px solid #ccc;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 10px;
       box-sizing: border-box;
       outline-offset: 2px;
       transition: border-color 0.3s ease;
     }
     #loginForm input:focus {
-      border-color: #1e88e5;
+      border-color: #ba68c8;
+      background: #ffffff;
     }
     #loginForm button {
       width: 100%;
-      background-color: #1e88e5;
+      background-color: #8a2be2;
       color: white;
       padding: 12px;
       font-size: 18px;
@@ -157,7 +149,7 @@
       transition: background-color 0.3s ease;
     }
     #loginForm button:hover {
-      background-color: #1565c0;
+      background-color: #7b1fa2;
     }
     #dashboard .relay-container {
       max-width: 960px;
@@ -167,7 +159,34 @@
       justify-content: center;
     }
 
-    /* Person photo, framed, bottom-left like reference layout */
+    /* ESP32 relay board illustration */
+    .board-wrap {
+      position: fixed;
+      right: 24px;
+      bottom: 40px;
+      width: 300px;
+      max-width: 34vw;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .board-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.4));
+    }
+    @media (max-width: 700px) {
+      .board-wrap {
+        width: 170px;
+        max-width: 42vw;
+        right: 8px;
+        bottom: 10px;
+        opacity: 0.55;
+      }
+    }
+
+    /* Person photo, framed */
     .person-photo-wrap {
       position: fixed;
       left: 24px;
@@ -176,14 +195,14 @@
       max-width: 30vw;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.95;
+      opacity: 0.85;
     }
     .person-photo-wrap img {
       width: 100%;
       display: block;
       border-radius: 18px 18px 0 0;
-      box-shadow: 0 6px 20px rgba(20,40,70,0.25);
-      border: 3px solid rgba(255,255,255,0.8);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      border: 3px solid rgba(255,255,255,0.4);
       border-bottom: none;
     }
 
@@ -206,11 +225,12 @@
 
     footer {
       font-size: 0.9rem;
-      color: #5c6b7a;
+      color: #e0d0f0;
       padding: 10px 0;
       margin-top: 40px;
       position: relative;
       z-index: 1;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
     }
   </style>
 </head>
@@ -222,6 +242,76 @@
   <!-- Decorative photo, bottom-left -->
   <div class="person-photo-wrap">
     <img src="assets/person.png" alt="" />
+  </div>
+
+  <!-- Decorative ESP32 relay board illustration, bottom-right -->
+  <div class="board-wrap">
+    <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="150" cy="320" rx="110" ry="14" fill="#bcd8f5" opacity="0.4"/>
+      <ellipse cx="150" cy="320" rx="70" ry="8" fill="#eaf3fc"/>
+      <ellipse cx="150" cy="316" rx="140" ry="1.5" fill="none" stroke="#7fb8ec" stroke-width="1" opacity="0.5"/>
+      <ellipse cx="150" cy="308" rx="150" ry="2" fill="none" stroke="#7fb8ec" stroke-width="1" opacity="0.35"/>
+
+      <rect x="30" y="20" width="150" height="260" rx="10" fill="#1a2233" stroke="#0d1420" stroke-width="2"/>
+
+      <rect x="45" y="60" width="55" height="55" rx="4" fill="#2b3550" stroke="#4a5a80" stroke-width="1.5"/>
+      <text x="72" y="92" text-anchor="middle" font-family="Arial" font-size="11" fill="#cfe0ff" font-weight="bold">ESP32</text>
+
+      <g fill="#d7b23a">
+        <rect x="40" y="26" width="6" height="10"/>
+        <rect x="52" y="26" width="6" height="10"/>
+        <rect x="64" y="26" width="6" height="10"/>
+        <rect x="76" y="26" width="6" height="10"/>
+        <rect x="88" y="26" width="6" height="10"/>
+        <rect x="100" y="26" width="6" height="10"/>
+        <rect x="112" y="26" width="6" height="10"/>
+        <rect x="124" y="26" width="6" height="10"/>
+      </g>
+
+      <rect x="45" y="130" width="55" height="30" rx="3" fill="#2b3550" stroke="#4a5a80" stroke-width="1.5"/>
+      <text x="72" y="238" text-anchor="middle" font-family="Arial" font-size="10" fill="#8ea3c9">ESP32</text>
+
+      <g font-family="Arial" font-size="7.5" fill="#dbe6f5">
+        <rect x="110" y="35" width="60" height="48" rx="4" fill="#1f3a63" stroke="#3f6aa8" stroke-width="1.2"/>
+        <circle cx="120" cy="45" r="3" fill="#ff5c5c"/>
+        <text x="140" y="48" text-anchor="middle">RELAY</text>
+        <rect x="118" y="60" width="44" height="14" rx="2" fill="#173058"/>
+
+        <rect x="110" y="90" width="60" height="48" rx="4" fill="#1f3a63" stroke="#3f6aa8" stroke-width="1.2"/>
+        <circle cx="120" cy="100" r="3" fill="#4ade80"/>
+        <text x="140" y="103" text-anchor="middle">RELAY</text>
+        <rect x="118" y="115" width="44" height="14" rx="2" fill="#173058"/>
+
+        <rect x="110" y="145" width="60" height="48" rx="4" fill="#1f3a63" stroke="#3f6aa8" stroke-width="1.2"/>
+        <circle cx="120" cy="155" r="3" fill="#ff5c5c"/>
+        <text x="140" y="158" text-anchor="middle">RELAY</text>
+        <rect x="118" y="170" width="44" height="14" rx="2" fill="#173058"/>
+
+        <rect x="110" y="200" width="60" height="48" rx="4" fill="#1f3a63" stroke="#3f6aa8" stroke-width="1.2"/>
+        <circle cx="120" cy="210" r="3" fill="#4ade80"/>
+        <text x="140" y="213" text-anchor="middle">RELAY</text>
+        <rect x="118" y="225" width="44" height="14" rx="2" fill="#173058"/>
+      </g>
+
+      <g stroke="#7fb8ec" stroke-width="1.5" fill="none" opacity="0.8">
+        <line x1="180" y1="59" x2="230" y2="59"/>
+        <line x1="180" y1="114" x2="230" y2="114"/>
+        <line x1="180" y1="169" x2="230" y2="169"/>
+        <line x1="180" y1="224" x2="230" y2="224"/>
+      </g>
+      <g fill="#7fb8ec">
+        <circle cx="181" cy="59" r="2.5"/>
+        <circle cx="181" cy="114" r="2.5"/>
+        <circle cx="181" cy="169" r="2.5"/>
+        <circle cx="181" cy="224" r="2.5"/>
+      </g>
+      <g font-family="Arial" font-size="12" fill="#ffffff" font-weight="bold">
+        <text x="234" y="63">RELAY1</text>
+        <text x="234" y="118">RELAY2</text>
+        <text x="234" y="173">RELAY3</text>
+        <text x="234" y="228">RELAY4</text>
+      </g>
+    </svg>
   </div>
 
   <!-- Login form -->
@@ -274,19 +364,18 @@
 
   <script>
     // Firebase config
-   const firebaseConfig = {
-  apiKey: "AIzaSyDyUu2RQfqWNVKc6FXoKX7SeoBHkYuwWHQ",
-  authDomain: "esp32-relay-control-01-72dcf.firebaseapp.com",
-  databaseURL: "https://esp32-relay-control-01-72dcf-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "esp32-relay-control-01-72dcf",
-  storageBucket: "esp32-relay-control-01-72dcf.firebasestorage.app",
-  messagingSenderId: "750239390882",
-  appId: "1:750239390882:web:2ecc8b36ac34d28dd98bfb"
-	};
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyUu2RQfqWNVKc6FXoKX7SeoBHkYuwWHQ",
+      authDomain: "esp32-relay-control-01-72dcf.firebaseapp.com",
+      databaseURL: "https://esp32-relay-control-01-72dcf-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "esp32-relay-control-01-72dcf",
+      storageBucket: "esp32-relay-control-01-72dcf.firebasestorage.app",
+      messagingSenderId: "750239390882",
+      appId: "1:750239390882:web:2ecc8b36ac34d28dd98bfb"
+    };
 
     firebase.initializeApp(firebaseConfig);
 
-    // Predefined login credentials (can be replaced with your logic)
     const allowedEmail = "tdom@gmail.com";
     const allowedPassword = "31122005";
 
@@ -303,9 +392,7 @@
         return;
       }
 
-      // Check hardcoded credentials first
       if(email === allowedEmail && password === allowedPassword){
-        // Sign in with Firebase
         firebase.auth().signInWithEmailAndPassword(email, password)
           .then(userCredential => {
             console.log("Signed in as", userCredential.user.email);
@@ -339,7 +426,7 @@
         relayRef.on("value", (snapshot) => {
           const state = snapshot.val();
           statusText.innerText = state ? "ON" : "OFF";
-          toggleButton.style.backgroundColor = state ? "green" : "blue";
+          toggleButton.style.backgroundColor = state ? "#2e7d32" : "#8a2be2";
         });
 
         toggleButton.onclick = () => {
